@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="HuluModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Network">
+          <Key>
+            <PropertyRef Name="NetworkID" />
+          </Key>
+          <Property Name="NetworkID" Type="int" Nullable="false" />
+          <Property Name="NetworkName" Type="varchar" MaxLength="30" />
+          <Property Name="ChannelNumber" Type="int" />
+          <Property Name="ShowsID" Type="int" />
+        </EntityType>
+        <EntityType Name="Show">
+          <Key>
+            <PropertyRef Name="ShowID" />
+          </Key>
+          <Property Name="ShowID" Type="int" Nullable="false" />
+          <Property Name="ShowName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ShowDescription" Type="varchar" MaxLength="100" />
+          <Property Name="ShowMinuteLength" Type="int" />
+          <Property Name="NumberOfSeasons" Type="int" />
+        </EntityType>
+        <Association Name="FK__Network__ShowsID__239E4DCF">
+          <End Role="Show" Type="Self.Show" Multiplicity="0..1" />
+          <End Role="Network" Type="Self.Network" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Show">
+              <PropertyRef Name="ShowID" />
+            </Principal>
+            <Dependent Role="Network">
+              <PropertyRef Name="ShowsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HuluModelStoreContainer">
+          <EntitySet Name="Network" EntityType="Self.Network" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Show" EntityType="Self.Show" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Network__ShowsID__239E4DCF" Association="Self.FK__Network__ShowsID__239E4DCF">
+            <End Role="Show" EntitySet="Show" />
+            <End Role="Network" EntitySet="Network" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HuluModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Network">
+          <Key>
+            <PropertyRef Name="NetworkID" />
+          </Key>
+          <Property Name="NetworkID" Type="Int32" Nullable="false" />
+          <Property Name="NetworkName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ChannelNumber" Type="Int32" />
+          <Property Name="ShowsID" Type="Int32" />
+          <NavigationProperty Name="Show" Relationship="Self.FK__Network__ShowsID__239E4DCF" FromRole="Network" ToRole="Show" />
+        </EntityType>
+        <EntityType Name="Show">
+          <Key>
+            <PropertyRef Name="ShowID" />
+          </Key>
+          <Property Name="ShowID" Type="Int32" Nullable="false" />
+          <Property Name="ShowName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ShowDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ShowMinuteLength" Type="Int32" />
+          <Property Name="NumberOfSeasons" Type="Int32" />
+          <NavigationProperty Name="Networks" Relationship="Self.FK__Network__ShowsID__239E4DCF" FromRole="Show" ToRole="Network" />
+        </EntityType>
+        <Association Name="FK__Network__ShowsID__239E4DCF">
+          <End Role="Show" Type="Self.Show" Multiplicity="0..1" />
+          <End Role="Network" Type="Self.Network" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Show">
+              <PropertyRef Name="ShowID" />
+            </Principal>
+            <Dependent Role="Network">
+              <PropertyRef Name="ShowsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HuluEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Networks" EntityType="Self.Network" />
+          <EntitySet Name="Shows" EntityType="Self.Show" />
+          <AssociationSet Name="FK__Network__ShowsID__239E4DCF" Association="Self.FK__Network__ShowsID__239E4DCF">
+            <End Role="Show" EntitySet="Shows" />
+            <End Role="Network" EntitySet="Networks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HuluModelStoreContainer" CdmEntityContainer="HuluEntities">
+          <EntitySetMapping Name="Networks">
+            <EntityTypeMapping TypeName="HuluModel.Network">
+              <MappingFragment StoreEntitySet="Network">
+                <ScalarProperty Name="NetworkID" ColumnName="NetworkID" />
+                <ScalarProperty Name="NetworkName" ColumnName="NetworkName" />
+                <ScalarProperty Name="ChannelNumber" ColumnName="ChannelNumber" />
+                <ScalarProperty Name="ShowsID" ColumnName="ShowsID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shows">
+            <EntityTypeMapping TypeName="HuluModel.Show">
+              <MappingFragment StoreEntitySet="Show">
+                <ScalarProperty Name="ShowID" ColumnName="ShowID" />
+                <ScalarProperty Name="ShowName" ColumnName="ShowName" />
+                <ScalarProperty Name="ShowDescription" ColumnName="ShowDescription" />
+                <ScalarProperty Name="ShowMinuteLength" ColumnName="ShowMinuteLength" />
+                <ScalarProperty Name="NumberOfSeasons" ColumnName="NumberOfSeasons" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
